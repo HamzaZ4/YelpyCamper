@@ -6,10 +6,12 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const flash= require('connect-flash')
 const ExpressError = require('./utils/ExpressError');
-
-const reviews = require('./routes/reviews');
-const campgrounds = require('./routes/campgrounds')
-
+const passport = require('passport');
+const LocalStrategy = require('passport-local')
+const reviewRoutes = require('./routes/reviews');
+const campgroundRoutes = require('./routes/campgrounds')
+const userRoutes = require('./routes/users')
+const User = require('./models/user')
 
 mongoose.connect("mongodb://localhost:27017/yelpy-camper");
 const db = mongoose.connection;
@@ -48,15 +50,28 @@ app.use((req,res,next)=>{
   res.locals.error = req.flash('error')
   next();
 });
+app.use(passport.initialize());
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser())
 
 
-app.use('/campgrounds',campgrounds)
-app.use('/campgrounds/:id/reviews',reviews)
+
+
+app.use('/campgrounds',campgroundRoutes)
+app.use('/campgrounds/:id/reviews',reviewRoutes)
+app.use('/',userRoutes)
 
 app.get('/',(req,res)=>{
   res.render('home')
 })
-
+app.get('/fakeUser',async(req,res)=>{
+  const user = new User({email:'g@g.com',username:'Hamza'});
+  const newuser = await User.register(user,'Hamza');
+  res.send(newuser)
+})
 
 app.all('*',(req,res,next)=>{
   

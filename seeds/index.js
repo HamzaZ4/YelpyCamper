@@ -28,7 +28,9 @@ const seedDB= async()=>{
       title: `${randArrayElement(descriptors)} ${randArrayElement(places)}`,
       image: `https://picsum.photos/400?random=${Math.random()}`,
       description: 'Real cool campground, I really liked fishing branches and leaves.'
-      ,price
+      ,price,
+      author: '6692c4628caf72c65877b4f1',
+
     })
     await camp.save();
   }

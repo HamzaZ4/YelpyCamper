@@ -45,18 +45,22 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-app.use((req,res,next)=>{
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error')
-  next();
-});
+
 app.use(passport.initialize());
 app.use(passport.session())
 passport.use(new LocalStrategy(User.authenticate()));
 
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser())
 
+app.use((req,res,next)=>{
+  res.locals.currentUser = req.user;
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  
+  next();
+});
 
 
 
@@ -67,9 +71,11 @@ app.use('/',userRoutes)
 app.get('/',(req,res)=>{
   res.render('home')
 })
+
+
 app.get('/fakeUser',async(req,res)=>{
-  const user = new User({email:'g@g.com',username:'Hamza'});
-  const newuser = await User.register(user,'Hamza');
+  const user = new User({email:'g@c.com',username:'Zahra'});
+  const newuser = await User.register(user,'Zahra');
   res.send(newuser)
 })
 

@@ -7,19 +7,10 @@ const ExpressError = require('../utils/ExpressError');
 const Review = require('../models/review');
 const flash= require('connect-flash')
 const Joi = require('joi');
+const {validateReview,isLoggedIn,isReviewAuthor} = require('../middleware');
 
 
 
-const validateReview = (req,res,next)=>{
-  const {error} = reviewSchema.validate(req.body);
-
-  if(error){
-    const msg = error.details.map(e=> e.message).join(',');
-    throw new ExpressError(msg,400)
-  }else{
-    next();
-  }
-}
 
 
 router.get("/", (req, res) => {
@@ -27,11 +18,13 @@ router.get("/", (req, res) => {
 });
 
 
-router.post('',validateReview,catchAsync(async(req,res,next)=>{
+router.post('',isLoggedIn, validateReview,catchAsync(async(req,res,next)=>{
+
   const {id} = req.params;
   const campground = await Campground.findById(id);
   const review = new Review(req.body.review);
 
+  review.author = req.user;
   campground.reviews.push(review);
 
   await review.save();
@@ -41,11 +34,16 @@ router.post('',validateReview,catchAsync(async(req,res,next)=>{
 
 }))
 
-router.delete('/:reviewId',catchAsync(async(req,res,next)=>{
+router.delete('/:reviewId',isLoggedIn,isReviewAuthor, catchAsync(async(req,res,next)=>{
   const {id, reviewId} = req.params;
 
   const campground = await Campground.findByIdAndUpdate(id,{ $pull : {reviews:reviewId}});
-  const review = await Review.findByIdAndDelete(reviewId);
+
+  const review = await Review.findById(reviewId);
+
+  if(review.author.equals(req.user._id) ){
+    await Review.findByIdAndDelete(reviewId);
+  }
   req.flash('success',"Review Deleted!")
   res.redirect(`/campgrounds/${id}`)
 

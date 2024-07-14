@@ -4,57 +4,16 @@ const catchAsync = require('../utils/catchAsync')
 const User = require('../models/user');
 const passport = require('passport')
 const { storeReturnTo } = require('../middleware');
+const users = require('../controllers/users')
+
+router.route('/register')
+.get(users.register)
+.post(catchAsync(users.registrationConfirmed));
 
 
-router.get('/register',(req,res)=>{
-  res.render('users/register')
-})
+router.route('/login')
+.get(users.login)
+.post(storeReturnTo,passport.authenticate('local',{failureFlash:true,failureRedirect:'/login'}),users.loginConfirmed);
 
-
-router.post('/register',catchAsync(async (req,res,next)=>{
-
-  try{
-
-    const {email, username, password} = req.body;
-    const newUser = new User({email,username}  );
-    const registeredUser = await User.register(newUser,password)
-    registeredUser.save();
-    req.login(registeredUser,(err)=>{
-      if(err) return next(err);
-      req.flash('success','Welcome to YelpyCamper');
-      res.redirect('/campgrounds')
-    })
-
-
-  }catch(e){
-    req.flash('error',e.message);
-    res.redirect('/register')
-  }
- 
-}))
-
-router.get('/login',(req,res)=>{
-  res.render('users/login')
-})
-
-router.post('/login',storeReturnTo,passport.authenticate('local',{failureFlash:true,failureRedirect:'/login'}),(req,res)=>{
-
- 
-  const redirectUrl = res.locals.returnTo || '/campgrounds';
-  
-  req.flash('success','Welcome back')
-  res.redirect(redirectUrl)
-
-})
-
-router.get('/logout',(req,res)=>{
-  req.logout((err)=>{
-    if(err){
-      return next(err);
-    }
-    req.flash('success',"Successfully logged out");
-    res.redirect('/login')
-  });
-  
-})
+router.get('/logout',users.logout)
 module.exports = router;

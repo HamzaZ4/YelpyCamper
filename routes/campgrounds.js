@@ -8,12 +8,20 @@ const flash= require('connect-flash')
 const {isLoggedIn} = require('../middleware')
 const Joi = require('joi');
 const {validateCampground, isAuthor} = require('../middleware')
+const multer = require('multer');
+
+const {storage} = require('../cloudinary/index')
+const upload = multer({storage})
 
 const campgrounds = require('../controllers/campgrounds')
 
 router.route('/')
   .get( catchAsync(campgrounds.index))
-  .post( validateCampground, catchAsync(campgrounds.postNewCamp));
+  .post(isLoggedIn, upload.array('image'),validateCampground, catchAsync(campgrounds.postNewCamp));
+
+
+   
+  
 
 
 router.get("/new",isLoggedIn, campgrounds.renderNewForm)

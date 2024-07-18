@@ -26,7 +26,12 @@ const seedDB= async()=>{
     const camp = new Campground({
       location: `${cities[random100].city}, ${cities[random100].province}`,
       title: `${randArrayElement(descriptors)} ${randArrayElement(places)}`,
-      image: `https://picsum.photos/400?random=${Math.random()}`,
+      images: [
+        {
+          url: 'https://res.cloudinary.com/ddzczvzfo/image/upload/v1721243719/YelpyCamper/u8lydaqeohtbvyln4ggg.jpg',
+          filename: 'YelpyCamper/u8lydaqeohtbvyln4ggg',
+          
+        }],
       description: 'Real cool campground, I really liked fishing branches and leaves.'
       ,price,
       author: '6692c4628caf72c65877b4f1',

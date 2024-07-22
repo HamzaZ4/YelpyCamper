@@ -1,4 +1,5 @@
 <% layout('./layouts/boilerplate.ejs') %>
+
   <h1>All Campgrounds</h1>
 
   <h4><a href="/campgrounds/new">Add a new campground</a> </h4>
@@ -9,7 +10,9 @@
           <div class="col-md-4">
             <% if(campground.images.length>0){ %>
             <img src="<%=campground.images[0].url %>"class="img-fluid" alt="">
-            <% } %>
+            <% } else{%>
+              <img src="<%=campground.images[0].url %>"class="img-fluid" alt="">
+              <% } %>
           </div>
           <div class="col-md-8">
             <div class="card-body">

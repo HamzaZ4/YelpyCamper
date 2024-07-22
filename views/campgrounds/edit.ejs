@@ -17,7 +17,7 @@
         <div class="mb-3">
             <label class ="form-label"for="image">Add Images:</label>
             <div class="input-group mb-3">
-              <input type="file" class="form-control" id="image" name="image">
+              <input type="file" class="form-control" id="image" name="image" multiple>
             </div>
           
         </div>
@@ -42,9 +42,9 @@
         </div>
   
         <div class="mb-3">
-          <h3>Delete images:</h3>
+          <h5>Delete images:</h5>
           <% campground.images.forEach((img,i)=>{ %>
-            <img src="<%= img.url %>" alt="" class="img-thumbnail d-inline">
+            <img src="<%= img.thumbnail %>" alt="" class="img-thumbnail d-inline">
             <div class="form-check-inline">
               <input type="checkbox" name="deleteImages[]" id="img-<%=i%>" value='<%=img.filename %>'>
             </div>

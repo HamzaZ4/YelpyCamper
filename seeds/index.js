@@ -26,6 +26,7 @@ const seedDB= async()=>{
     const camp = new Campground({
       location: `${cities[random100].city}, ${cities[random100].province}`,
       title: `${randArrayElement(descriptors)} ${randArrayElement(places)}`,
+      geometry: { type: 'Point', coordinates: [12.550343, 55.665957]},
       images: [
         {
           url: 'https://res.cloudinary.com/ddzczvzfo/image/upload/v1721243719/YelpyCamper/u8lydaqeohtbvyln4ggg.jpg',
@@ -35,6 +36,7 @@ const seedDB= async()=>{
       description: 'Real cool campground, I really liked fishing branches and leaves.'
       ,price,
       author: '6692c4628caf72c65877b4f1',
+      
 
     })
     await camp.save();

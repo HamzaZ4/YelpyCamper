@@ -20,13 +20,13 @@ const randArrayElement = (array)=> array[Math.floor(Math.random()*array.length)]
 
 const seedDB= async()=>{
   await Campground.deleteMany({});
-  for(let i=0;i<50;i++){
+  for(let i=0;i<200;i++){
     const random100 = Math.floor(Math.random()*100);
     const price= Math.floor(Math.random()*20)+10;
     const camp = new Campground({
       location: `${cities[random100].city}, ${cities[random100].province}`,
       title: `${randArrayElement(descriptors)} ${randArrayElement(places)}`,
-      geometry: { type: 'Point', coordinates: [12.550343, 55.665957]},
+      geometry: { type: 'Point', coordinates: [cities[random100].longitude, cities[random100].latitude]},
       images: [
         {
           url: 'https://res.cloudinary.com/ddzczvzfo/image/upload/v1721243719/YelpyCamper/u8lydaqeohtbvyln4ggg.jpg',

@@ -18,7 +18,7 @@ const userRoutes = require("./routes/users");
 const User = require("./models/user");
 const dbUrl = process.env.DB_URL;
 mongoose.connect(
-  "mongodb+srv://mcHamz72:<Password>@cluster0.tfj7y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  "mongodb+srv://ReadOnlyUser:ReadOnlyUser23@cluster0.tfj7y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 );
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));

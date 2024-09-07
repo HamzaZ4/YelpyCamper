@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const Campground = require("../models/campground");
 
 mongoose.connect(
-  "mongodb+srv://mcHamz72:WZbQSQ_%23%24XtCy2k@cluster0.tfj7y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  "mongodb+srv://mcHamz72:<Password>@cluster0.tfj7y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 );
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));

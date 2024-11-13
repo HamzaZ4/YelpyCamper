@@ -16,19 +16,13 @@ const reviewRoutes = require("./routes/reviews");
 const campgroundRoutes = require("./routes/campgrounds");
 const userRoutes = require("./routes/users");
 const User = require("./models/user");
-<<<<<<< HEAD
 const dbUrl = process.env.DB_URL;
-mongoose.connect(
-  "mongodb+srv://ReadOnlyUser:ReadOnlyUser23@cluster0.tfj7y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-);
-=======
-//const dbUrl = process.env.DB_URL;
-const dbUrl = "mongodb://localhost:27017/yelpy-camper";
+//const dbUrl = "mongodb://localhost:27017/yelpy-camper";
 
 const MongoStore = require("connect-mongo");
 
 mongoose.connect(dbUrl);
->>>>>>> 6b48697 (added functionality to allow saving sessions through MongoStore)
+
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 

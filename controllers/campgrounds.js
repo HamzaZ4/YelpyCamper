@@ -20,9 +20,10 @@ module.exports.postNewCamp = async (req, res, next) => {
     { limit: 1 }
   );
   const campground = new Campground(req.body.campground);
-  if (geoData.features[0].geometry) {
+  if (!geoData.features[0].geometry) {
     req.flash("error", "Cannot find campground");
     res.redirect("/campgrounds");
+    return;
   }
   console.log(geoData.features[0].geometry);
   campground.geometry = geoData.features[0].geometry;
